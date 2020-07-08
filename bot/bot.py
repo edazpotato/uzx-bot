@@ -6,7 +6,7 @@ from bot.custom import cogs
 
 
 # Load environment variables
-load_dotenv()
+#load_dotenv()
 
 
 async def stop(bot):
