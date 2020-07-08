@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 discord.py
+=======
+git+https://github.com/Rapptz/discord.py
+>>>>>>> 0e5ef476ad34eae4c711aa54f5f68532f531a813
