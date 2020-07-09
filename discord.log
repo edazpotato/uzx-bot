@@ -1,2 +1,5 @@
-2020-06-21 14:25:51,341:DEBUG:discord.client: on_ready has successfully been registered as an event
-2020-06-21 14:25:51,343:INFO:discord.client: logging in using static token
+2020-07-09 17:11:18,591:DEBUG:discord.client: on_ready has successfully been registered as an event
+2020-07-09 17:11:18,593:INFO:discord.client: logging in using static token
+2020-07-09 17:11:18,950:DEBUG:discord.http: GET https://discordapp.com/api/v7/users/@me with None has returned 401
+2020-07-09 17:11:18,951:INFO:discord.client: Cleaning up tasks.
+2020-07-09 17:11:18,951:INFO:discord.client: Closing the event loop.

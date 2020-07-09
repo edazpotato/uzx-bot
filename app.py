@@ -1,3 +1,10 @@
+import os
+
+# Load environment variables if not on heroku
+if not os.getenv("DISCORD_TOKEN"):
+    from dotenv import load_dotenv
+    load_dotenv()
+
 import discord
 import logging
 from bot import bot
