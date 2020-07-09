@@ -76,21 +76,20 @@ class Fun(commands.Cog):
     # jokes
     @commands.command(name="joke", aliases=["jokes", "pun", "puns", "dadjoke", "dadjokes"])
     async def joke_command(self, ctx):
+        await ctx.message.add_reaction("👌")
         p = Path(__file__).parents[1]
         p = Path(str(p) + "\\command_data\\jokes.json")
         f = open(file=p, mode="r")
         jsonData = json.load(f)
         pData = json
         jokes = jsonData["jokes"]
-        print(jokes)
         jokeId = random.randint(0, len(jokes))
         joke = jokes[jokeId]
-        print(joke)
         data = {
-            "title": joke,
+            "description": joke,
             "color": self.color
         }
         embed = embeds.RichEmbed(self.bot, data)
-        embed.send(ctx)
+        await embed.send(ctx)
 
 
