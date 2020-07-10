@@ -8,23 +8,24 @@ class Loop(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.loop.start()
+        self.looper.start()
         self.i = 0
 
     def cog_unload(self):
         self.looper.cancel()
 
     @tasks.loop(minutes=1)
-    async def loop(self):
+    async def looper(self):
         print("Looped: " + str(self.i));
         self.i += 1
         await self.statuspage()
 
     @looper.before_loop
-    async def before_loop(self):
+    async def before_looper(self):
         print('waiting for bot to start before sending http things...')
         await self.bot.wait_until_ready()
 
+    # things to loop
     async def statuspage(self):
         api_key = '52a21606-f85b-49b6-a1bb-44ee2948b878'
         page_id = 'yly9drz8dt5f'
@@ -37,8 +38,8 @@ class Loop(commands.Cog):
         headers = {"Authorization": "OAuth " + api_key}
         payload = {"data": {metric_id: {"timestamp": ts, "value": latency}}}
         session = aiohttp.ClientSession()
-        print("sending data to '" + url + "'")
         async with aiohttp.ClientSession() as session:
             async with session.post(url, headers=headers, data=payload) as resp:
                 print(resp.status)
                 print(await resp.text())
+            session.close()
