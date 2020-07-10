@@ -33,7 +33,7 @@ class Fun(commands.Cog):
     # is the earth flat?
     @commands.command(name="is", hidden=True)
     async def is_the_earth_flat_command(self, ctx, *, the_earth_flat: str):
-        if the_earth_flat == "the earth flat?":
+        if the_earth_flat == "the earth flat?" or "the earth flat":
             await ctx.message.add_reaction(self.bot.get_emoji(713222235246035024))
             data = {
                 "title": "<a:ano:713222235246035024> NO",
