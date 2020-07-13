@@ -78,10 +78,10 @@ class Fun(commands.Cog):
     async def joke_command(self, ctx):
         await ctx.message.add_reaction("👌")
         p = Path(__file__).parents[1]
-        p = Path(str(p) + "\\command_data\\jokes.json")
+        p = Path(str(p) + "\\data\\command_data\\jokes.json")
         f = open(file=p, mode="r")
         jsonData = json.load(f)
-        pData = json
+        f.close()
         jokes = jsonData["jokes"]
         jokeId = random.randint(0, len(jokes))
         joke = jokes[jokeId]

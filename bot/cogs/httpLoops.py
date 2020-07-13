@@ -8,7 +8,7 @@ class Loop(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.looper.start()
+        #self.looper.start()
         self.i = 0
 
     def cog_unload(self):
@@ -37,9 +37,9 @@ class Loop(commands.Cog):
         url = "https://api.statuspage.io/v1/pages/" + page_id + "/metrics/data"
         headers = {"Authorization": "OAuth " + api_key}
         payload = {"data": {metric_id: {"timestamp": ts, "value": latency}}}
-        #session = aiohttp.ClientSession()
-        #async with aiohttp.ClientSession() as session:
-            #async with session.post(url, headers=headers, data=payload) as resp:
-                #print(resp.status)
-                #print(await resp.text())
-            #session.close()
+        session = aiohttp.ClientSession()
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, headers=headers, data=payload) as resp:
+                print(resp.status)
+                print(await resp.text())
+            session.close()
