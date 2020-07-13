@@ -9,8 +9,11 @@ from bot.custom import embeds
 
 
 async def fetch(url, headers):
-    async with aiohttp.ClientSession().get(url, headers=headers) as response:
-        return await response.json()
+    session = aiohttp.ClientSession()
+    response = await session.get(url, headers=headers)
+    res = await response.json()
+    await session.close()
+    return res
 
 
 class Fun(commands.Cog):

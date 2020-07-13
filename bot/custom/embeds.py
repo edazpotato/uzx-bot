@@ -1,4 +1,5 @@
 import discord
+import datetime
 
 
 class RichEmbed:
@@ -9,7 +10,7 @@ class RichEmbed:
             data["color"] = "000000"
         if "description" not in data:
             data["description"] = ""
-        embed = discord.Embed(title=data["title"], description=data["description"], color=data["color"])
+        embed = discord.Embed(title=data["title"], description=data["description"], color=data["color"], timestamp=datetime.datetime.utcnow())
         if "thumbnail_url" in data:
             embed.set_thumbnail(url=data["thumbnail_url"])
         if "image_url" in data:

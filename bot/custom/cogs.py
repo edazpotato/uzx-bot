@@ -1,4 +1,4 @@
-from bot.cogs import eventListeners, httpLoops, funCommands, utilityCommands, moderationCommands, adminCommands
+from bot.cogs import eventListeners, httpLoops, funCommands, minecraftCommands, utilityCommands, moderationCommands, adminCommands
 
 
 class CogLoader:
@@ -16,3 +16,4 @@ class CogLoader:
         self.bot.add_cog(moderationCommands.Moderation(self.bot))
         self.bot.add_cog(utilityCommands.Utility(self.bot))
         self.bot.add_cog(funCommands.Fun(self.bot))
+        self.bot.add_cog(minecraftCommands.Minecraft(self.bot))
