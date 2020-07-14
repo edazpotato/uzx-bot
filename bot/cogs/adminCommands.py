@@ -26,14 +26,14 @@ class Admin(commands.Cog, command_attrs=dict(hidden=True)):
     async def raw(self, ctx, amount: typing.Optional[int] = 1):
         messages = await ctx.channel.history(limit=amount+1).flatten()
         message = messages[amount]
-        message.content = message.content.replace("`", "\\`")
+        msgcontent = discord.utils.escape_mentions(discord.utils.escape_markdown(message.content))
         data = {
             "color": self.color,
             "author": {
                 "name": "{0}#{1}".format(message.author.name, message.author.discriminator),
                 "icon_url": message.author.avatar_url
             },
-            "description": "Raw message content:```\n{0}\n```".format(message.content)
+            "description": "Raw message content:```\n\n{0}\n\n```".format(msgcontent)
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
