@@ -34,7 +34,6 @@ class Minecraft(commands.Cog):
             "title": "**__{0}__**".format(playername),
             "color": self.color,
             "thumbnail_url": "https://crafatar.com/avatars/{0}.png".format(uuid),
-            "image_url": "https://crafatar.com/renders/body/{0}.png".format(uuid),
             "description": "*UUID*: `{0}`".format(uuid)
         }
         embed = embeds.RichEmbed(self.bot, data)
