@@ -19,7 +19,7 @@ class RichEmbed:
             if "name" not in data["author"]:
                 data["author"]["name"] = ""
             if "url" not in data["author"]:
-                data["author"]["name"] = ""
+                data["author"]["url"] = ""
             if "icon_url" not in data["author"]:
                 data["author"]["icon_url"] = ""
             embed.set_author(

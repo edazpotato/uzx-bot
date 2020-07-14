@@ -65,6 +65,7 @@ class Fun(commands.Cog):
     # memes
     @commands.command(name="meme", aliases=["memes"])
     async def meme_command(self, ctx):
+        await ctx.message.add_reaction("<a:loading:732421120954990618>")
         res = await fetch("https://api.ksoft.si/images/random-meme", {"Authorization": "Bearer " + os.getenv("KSOFT_SI_TOKEN")})
         data = {
             "title": res["title"],
@@ -75,11 +76,12 @@ class Fun(commands.Cog):
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
+        await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
 
     # jokes
     @commands.command(name="joke", aliases=["jokes", "pun", "puns", "dadjoke", "dadjokes"])
     async def joke_command(self, ctx):
-        await ctx.message.add_reaction("👌")
+        await ctx.message.add_reaction("<a:loading:732421120954990618>")
         p = Path(__file__).parents[1]
         p = Path(str(p) + "\\data\\command_data\\jokes.json")
         f = open(file=p, mode="r")
@@ -94,5 +96,6 @@ class Fun(commands.Cog):
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
+        await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
 
 

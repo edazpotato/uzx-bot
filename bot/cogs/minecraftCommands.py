@@ -24,12 +24,10 @@ class Minecraft(commands.Cog):
     # TODO: add hypixel level
     @commands.command(name="player", aliases=["minecraft", "mc"])
     async def minecraft_player_command(self, ctx, username: str):
-        await ctx.message.add_reaction("👌")
-
+        await ctx.message.add_reaction("<a:loading:732421120954990618>")
         uuidres = await fetch("https://api.mojang.com/users/profiles/minecraft/{0}".format(username))
         uuid = uuidres["id"]
         playername = uuidres["name"]
-        print(nameHitory)
         data = {
             "title": "**__{0}__**".format(playername),
             "color": self.color,
@@ -38,16 +36,16 @@ class Minecraft(commands.Cog):
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
+        await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
 
     # player skin
     @commands.command(name="skin", aliases=["s"])
     async def minecraft_skin_command(self, ctx, username: str):
-        await ctx.message.add_reaction("👌")
+        await ctx.message.add_reaction("<a:loading:732421120954990618>")
 
         uuidres = await fetch("https://api.mojang.com/users/profiles/minecraft/{0}".format(username))
         uuid = uuidres["id"]
         playername = uuidres["name"]
-        print(nameHitory)
         data = {
             "title": "**__{0}__**".format(playername),
             "color": self.color,
@@ -55,6 +53,7 @@ class Minecraft(commands.Cog):
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
+        await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
 
 
 
