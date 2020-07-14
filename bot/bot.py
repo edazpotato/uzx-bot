@@ -1,7 +1,9 @@
 import os
+import pymongo
 import discord
 from discord.ext import commands
 from bot.custom import cogs
+
 
 
 async def stop(bot):
@@ -10,6 +12,14 @@ async def stop(bot):
 
 
 def run():
+    dbPass = "9RyOgLLCvIPvFs5c"
+    dbClient = pymongo.MongoClient(f"mongodb+srv://test_user_1:{dbPass}@uzxdb.xswzv.gcp.mongodb.net/uzxdb?retryWrites=true&w=majority")
+    db = dbClient.test
+    for database_name in client.list_database_names():
+        print("Database - " + database_name)
+        for collection_name in client.get_database(database_name).list_collection_names():
+            print(collection_name)
+
     def prefix(bot, message):
         customprefix = "$"
         prefixes = [

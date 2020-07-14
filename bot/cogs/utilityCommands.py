@@ -27,7 +27,7 @@ class Utility(commands.Cog):
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
 
-    @commands.command(name="prefix")
+    #@commands.command(name="prefix")
     async def prefix_command(self, ctx):
         await ctx.message.add_reaction("👌")
         p = Path(__file__).parents[1]
@@ -50,3 +50,9 @@ class Utility(commands.Cog):
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
+
+    @commands.command(name="invite")
+    async def invite_bot_command(self, ctx):
+        url = discord.utils.oauth_url(self.bot.user.id, permissions=discord.Permissions(permissions=["administrator"]))
+        await ctx.send("Add me to your server using this URL: *{0}*".format(url))
+        HYPIXELAPIKEY = "65a65668-c404-45ba-bfb0-f05fd008929a"
