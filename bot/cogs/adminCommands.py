@@ -10,7 +10,7 @@ class Admin(commands.Cog, command_attrs=dict(hidden=True)):
         self.bot = bot
         self.color = 0x03FCDB
 
-    @commands.group()
+    @commands.group(aliases=["a"])
     @commands.is_owner()
     async def admin(self, ctx):
         if ctx.invoked_subcommand is None:
@@ -26,13 +26,14 @@ class Admin(commands.Cog, command_attrs=dict(hidden=True)):
     async def raw(self, ctx, amount: typing.Optional[int] = 1):
         messages = await ctx.channel.history(limit=amount+1).flatten()
         message = messages[amount]
+        message.content = message.content.replace("`", "\\`")
         data = {
             "color": self.color,
             "author": {
                 "name": "{0}#{1}".format(message.author.name, message.author.discriminator),
                 "icon_url": message.author.avatar_url
             },
-            "description": "Raw message content:```{0}```".format(message.content)
+            "description": "Raw message content:```\n{0}\n```".format(message.content)
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
