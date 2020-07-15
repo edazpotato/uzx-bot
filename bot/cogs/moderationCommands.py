@@ -145,6 +145,7 @@ class Moderation(commands.Cog):
     @commands.command(name="leave", aliases=["goaway"])
     async def leave_command(self, ctx):
         await ctx.message.add_reaction("😢")
+        await ctx.send("I thought you loved me!")
         await ctx.send("😢")
         await ctx.send("'igt, ima head out 😢")
         await ctx.send("😢")
