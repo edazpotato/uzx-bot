@@ -53,6 +53,6 @@ class Utility(commands.Cog):
 
     @commands.command(name="invite")
     async def invite_bot_command(self, ctx):
-        url = discord.utils.oauth_url(self.bot.user.id, permissions=discord.Permissions(permissions=["administrator"]))
+        url = f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=8&scope=bot"
         await ctx.send("Add me to your server using this URL: *{0}*".format(url))
         HYPIXELAPIKEY = "65a65668-c404-45ba-bfb0-f05fd008929a"

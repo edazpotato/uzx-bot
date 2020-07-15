@@ -1,4 +1,6 @@
 import os
+import ast
+import json
 import typing
 import discord
 from discord.ext import commands
@@ -22,8 +24,8 @@ class Admin(commands.Cog, command_attrs=dict(hidden=True)):
             embed = embeds.RichEmbed(self.bot, data)
             await embed.send(ctx)
 
-    @admin.command()
-    async def raw(self, ctx, amount: typing.Optional[int] = 1):
+    @admin.command(name="raw", aliases=["r"])
+    async def raw_subcommand(self, ctx, amount: typing.Optional[int] = 1):
         messages = await ctx.channel.history(limit=amount+1).flatten()
         message = messages[amount]
         msgcontent = discord.utils.escape_mentions(discord.utils.escape_markdown(message.content))
@@ -36,4 +38,18 @@ class Admin(commands.Cog, command_attrs=dict(hidden=True)):
             "description": "Raw message content:```\n\n{0}\n\n```".format(msgcontent)
         }
         embed = embeds.RichEmbed(self.bot, data)
+        await embed.send(ctx)
+
+    @admin.command(name="embed", aliases=["e"])
+    async def embed_subcommand(self, ctx, *, data: typing.Optional[str]):
+        json_acceptable_string = data.replace("'", "\"")
+        d = json.loads(json_acceptable_string)
+        if d is None:
+            d = {
+                "title": "ERROR: no embed code provided",
+                "color": self.color
+            }
+        else:
+            d = ast.literal_eval(data)
+        embed = embeds.RichEmbed(self.bot, d)
         await embed.send(ctx)

@@ -7,7 +7,7 @@ class RichEmbed:
         if "title" not in data:
             data["title"] = ""
         if "color" not in data:
-            data["color"] = "000000"
+            data["color"] = 0x000000
         if "description" not in data:
             data["description"] = ""
         embed = discord.Embed(title=data["title"], description=data["description"], color=data["color"], timestamp=datetime.datetime.utcnow())
