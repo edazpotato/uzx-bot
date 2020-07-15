@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from bot.custom import embeds
 import json
+import typing
 from pathlib import Path
 
 
@@ -55,4 +56,20 @@ class Utility(commands.Cog):
     async def invite_bot_command(self, ctx):
         url = f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=8&scope=bot"
         await ctx.send("Add me to your server using this URL: *{0}*".format(url))
-        HYPIXELAPIKEY = "65a65668-c404-45ba-bfb0-f05fd008929a"
+
+    @commands.command(name="emoji", aliases=["se", "steal", "stealemoji"])
+    async def emoji_steal_command(self, ctx, emoji: typing.Optional[discord.Emoji]):
+        if emoji is None:
+            data = {
+                "color": self.color,
+                "title": "For now, the public bot can only grab custom emoji.\nFor now you can't steal animated emoji if you don't have nitro :("
+            }
+        else:
+            data = {
+                "color": self.color,
+                "title": f":{emoji.name}:",
+                "description": "Click to the image, click *open original*  to open it in your browser, then right click and choose *save image as*",
+                "image_url": emoji.url
+            }
+        embed = embeds.RichEmbed(self.bot, data)
+        await embed.send(ctx)

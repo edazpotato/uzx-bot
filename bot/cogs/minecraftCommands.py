@@ -19,6 +19,7 @@ class Minecraft(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.color = 0x00AA00
+        self.hyApiKey = "65a65668-c404-45ba-bfb0-f05fd008929a"
 
     # general player data
     # TODO: add hypixel level
