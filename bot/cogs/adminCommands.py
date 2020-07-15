@@ -3,9 +3,24 @@ import ast
 import json
 import typing
 import discord
+import asyncio
 from discord.ext import commands
 from bot.custom import embeds
 
+def insert_returns(body):
+    # insert return stmt if the last expression is a expression statement
+    if isinstance(body[-1], ast.Expr):
+        body[-1] = ast.Return(body[-1].value)
+        ast.fix_missing_locations(body[-1])
+
+    # for if statements, we insert returns into the body and the orelse
+    if isinstance(body[-1], ast.If):
+        insert_returns(body[-1].body)
+        insert_returns(body[-1].orelse)
+
+    # for with blocks, again we insert returns into the body
+    if isinstance(body[-1], ast.With):
+        insert_returns(body[-1].body)
 
 class Admin(commands.Cog, command_attrs=dict(hidden=True)):
     def __init__(self, bot):
@@ -40,7 +55,7 @@ class Admin(commands.Cog, command_attrs=dict(hidden=True)):
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
 
-    @admin.command(name="embed", aliases=["e"])
+    @admin.command(name="embed")
     async def embed_subcommand(self, ctx, *, data: typing.Optional[str]):
         json_acceptable_string = data.replace("'", "\"")
         d = json.loads(json_acceptable_string)
@@ -53,3 +68,53 @@ class Admin(commands.Cog, command_attrs=dict(hidden=True)):
             d = ast.literal_eval(data)
         embed = embeds.RichEmbed(self.bot, d)
         await embed.send(ctx)
+
+    @commands.is_owner()
+    @commands.command(name="eval", aliases=["e", "ev", "evaluate"])
+    async def eval_command(self, ctx, *, cmd):
+        """Evaluates input.
+            Input is interpreted as newline seperated statements.
+            If the last statement is an expression, that is the return value.
+            Usable globals:
+              - `bot`: the bot instance
+              - `discord`: the discord module
+              - `commands`: the discord.ext.commands module
+              - `ctx`: the invocation context
+              - `__import__`: the builtin `__import__` function
+            Such that `>eval 1 + 1` gives `2` as the result.
+            The following invocation will cause the bot to send the text '9'
+            to the channel of invocation and return '3' as the result of evaluating
+            >eval ```
+            a = 1 + 2
+            b = a * 2
+            await ctx.send(a + b)
+            a
+            ```
+        """
+        fn_name = "_eval_expr"
+
+        cmd = cmd.strip("` ")
+
+        # add a layer of indentation
+        cmd = "\n".join(f"    {i}" for i in cmd.splitlines())
+
+        # wrap in async def body
+        body = f"async def {fn_name}():\n{cmd}"
+
+        parsed = ast.parse(body)
+        body = parsed.body[0].body
+
+        insert_returns(body)
+
+        env = {
+            'bot': ctx.bot,
+            'discord': discord,
+            'commands': commands,
+            'ctx': ctx,
+            'asyncio': asyncio,
+            '__import__': __import__
+        }
+        exec(compile(parsed, filename="<ast>", mode="exec"), env)
+
+        result = (await eval(f"{fn_name}()", env))
+        await ctx.send(f"```\n\n{result}\n\n```")

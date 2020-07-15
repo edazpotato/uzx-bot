@@ -52,7 +52,7 @@ class Utility(commands.Cog):
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
 
-    @commands.command(name="invite")
+    @commands.command(name="invite", aliases=["inv", "add"])
     async def invite_bot_command(self, ctx):
         url = f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=8&scope=bot"
         await ctx.send("Add me to your server using this URL: *{0}*".format(url))
