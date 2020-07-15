@@ -73,3 +73,14 @@ class Utility(commands.Cog):
             }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
+
+    @commands.command(name="info", aliases=["about"])
+    async def info_command(self, ctx):
+        owner = self.bot.get_user(self.bot.owner_id)
+        data = {
+            "title": "Bot info",
+            "color": self.color,
+            "description": f"```Owner: {owner.name}#{owner.discriminator}\nLanguage: Python 3\nLibrary: Discord.py```"
+        }
+        embed = embeds.RichEmbed(self.bot, data)
+        await embed.send(ctx)
