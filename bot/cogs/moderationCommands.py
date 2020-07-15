@@ -140,3 +140,12 @@ class Moderation(commands.Cog):
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
+
+    @commands.check_any(commands.is_owner(), commands.has_permissions(kick_members=True))
+    @commands.command(name="leave", aliases=["goaway"])
+    async def leave_command(self, ctx):
+        await ctx.message.add_reaction("😢")
+        await ctx.send("😢")
+        await ctx.send("'igt, ima head out 😢")
+        await ctx.send("😢")
+        await ctx.guild.leave()
