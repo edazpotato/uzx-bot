@@ -62,7 +62,8 @@ class Utility(commands.Cog):
         if emoji is None:
             data = {
                 "color": self.color,
-                "title": "For now, the public bot can only grab custom emoji.\nFor now you can't steal animated emoji if you don't have nitro :("
+                "title": "Theivery error:",
+                "description": "For now you can't steal animated emoji if you don't have nitro :(\n> If you want to use a bult-in Discord emoji somewhere other than Discord, do `:emojiName:` but put a `\` before it like this: `\:emojiName:`. Then you can copy and paste it like a normal text character"
             }
         else:
             data = {
