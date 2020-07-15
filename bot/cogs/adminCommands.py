@@ -3,7 +3,7 @@ import ast
 import json
 import typing
 import discord
-import asyncio
+import aiohttp
 from discord.ext import commands
 from bot.custom import embeds
 
@@ -72,6 +72,13 @@ class Admin(commands.Cog, command_attrs=dict(hidden=True)):
     @commands.is_owner()
     @commands.command(name="eval", aliases=["e", "ev", "evaluate"])
     async def eval_command(self, ctx, *, cmd):
+        await ctx.message.add_reaction("🆗")
+        await ctx.message.add_reaction("🇧")
+        await ctx.message.add_reaction("🇴")
+        await ctx.message.add_reaction("🅾")
+        await ctx.message.add_reaction("🇲")
+        await ctx.message.add_reaction("🇪")
+        await ctx.message.add_reaction("🇷")
         """Evaluates input.
             Input is interpreted as newline seperated statements.
             If the last statement is an expression, that is the return value.
@@ -111,7 +118,7 @@ class Admin(commands.Cog, command_attrs=dict(hidden=True)):
             'discord': discord,
             'commands': commands,
             'ctx': ctx,
-            'asyncio': asyncio,
+            'aiohttp': aiohttp,
             '__import__': __import__
         }
         exec(compile(parsed, filename="<ast>", mode="exec"), env)
