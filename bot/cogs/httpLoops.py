@@ -8,7 +8,7 @@ class Loop(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        #self.looper.start()
+        self.looper.start()
         self.i = 0
 
     def cog_unload(self):
