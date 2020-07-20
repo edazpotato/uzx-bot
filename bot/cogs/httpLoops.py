@@ -38,8 +38,7 @@ class Loop(commands.Cog):
         headers = {"Authorization": "OAuth " + api_key}
         payload = {"data": {metric_id: {"timestamp": ts, "value": latency}}}
         session = aiohttp.ClientSession()
-        async with aiohttp.ClientSession() as session:
-            async with session.post(url, headers=headers, data=payload) as resp:
-                print(resp.status)
-                print(await resp.text())
-                await session.close()
+        response = await session.post(url, headers=headers, data=payload)
+        print(response.status)
+        print(await response.text())
+        await session.close()
