@@ -36,7 +36,7 @@ class Loop(commands.Cog):
 
         url = f"https://api.statuspage.io/v1/pages/{page_id}/metrics/{metric_id}/data.json"
         headers = {"Authorization": "OAuth " + api_key}
-        payload = {"data": {metric_id: {"timestamp": ts, "value": latency}}}
+        payload = {"data": {"timestamp": ts, "value": latency}}
         session = aiohttp.ClientSession()
         response = await session.post(url, headers=headers, data=payload)
         print(response.status)
