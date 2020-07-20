@@ -34,7 +34,7 @@ class Loop(commands.Cog):
         ts = print(int(time.time()))
         latency = print(self.bot.latency)
 
-        url = "https://api.statuspage.io/v1/pages/" + page_id + "/metrics/data"
+        url = f"https://api.statuspage.io/v1/pages/{page_id}/metrics/{metric_id}/data.json"
         headers = {"Authorization": "OAuth " + api_key}
         payload = {"data": {metric_id: {"timestamp": ts, "value": latency}}}
         session = aiohttp.ClientSession()
@@ -42,4 +42,4 @@ class Loop(commands.Cog):
             async with session.post(url, headers=headers, data=payload) as resp:
                 print(resp.status)
                 print(await resp.text())
-            session.close()
+                await session.close()
