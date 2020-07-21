@@ -1,5 +1,6 @@
 from discord.ext import tasks, commands
 import time
+import math
 import aiohttp
 
 
@@ -32,7 +33,7 @@ class Loop(commands.Cog):
         metric_id = 'n7w2zgrp830t'
 
         ts = int(time.time())
-        latency = round(self.bot.latency, 1)
+        latency = math.ceil(self.bot.latency)
 
         url = f"https://api.statuspage.io/v1/pages/{page_id}/metrics/{metric_id}/data.json"
         headers = {"Authorization": "OAuth " + api_key}
