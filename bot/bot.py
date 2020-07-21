@@ -41,6 +41,7 @@ def run():
     description = "The last discord bot you'll ever need!"
     client = commands.Bot(
         command_prefix=prefix,
+        help_command=None,
         case_insensitive=True,
         description=description,
         owner_id=int(os.getenv("OWNER_ID"))
@@ -54,7 +55,6 @@ def run():
 
     # register cogs
     cogloader = cogs.CogLoader(client)
-    cogloader.loadcogs()
 
     client.run(os.getenv("DISCORD_TOKEN"))
 

@@ -2,13 +2,14 @@ import json
 from pathlib import Path
 import aiohttp
 import os
+import typing
 import random
 import discord
 from discord.ext import commands
 from bot.custom import embeds
 
 
-async def fetch(url, headers):
+async def fetch(url, headers: typing.Optional[dict] = {}):
     session = aiohttp.ClientSession()
     response = await session.get(url, headers=headers)
     res = await response.json()
@@ -97,5 +98,17 @@ class Fun(commands.Cog):
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
         await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
+
+    @commands.command(name="affirmation", aliases=["affirm", "af"])
+    async def affimation_command(self, ctx):
+        await ctx.message.add_reaction("<a:loading:732421120954990618>")
+        affirmation = await fetch("https://www.affirmations.dev/")
+        data = {
+            "color": self.color,
+            "title": affirmation["affirmation"]
+        }
+        embed = embeds.RichEmbed(self.bot, data)
+        await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
+        await embed.send(ctx)
 
 

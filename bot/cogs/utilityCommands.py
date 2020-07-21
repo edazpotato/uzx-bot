@@ -85,3 +85,13 @@ class Utility(commands.Cog):
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
+
+    @commands.command(name="help", aliases=["command", "commands"])
+    async def help_command(self, ctx):
+        data = {
+            "color": self.color,
+            "title": "Need help? We've got you covered",
+            "description": "[Commands](https://edazpotato.github.io/uzx/docs/#/ref/commands/)\n[Docs](https://edazpotato.github.io/uzx/docs/)   (please help us write these)\n[Support server](https://discord.gg/mzR7eeZ)"
+        }
+        embed = embeds.RichEmbed(self.bot, data)
+        await embed.send(ctx)
