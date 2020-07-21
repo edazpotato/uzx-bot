@@ -33,7 +33,7 @@ class Loop(commands.Cog):
         metric_id = 'n7w2zgrp830t'
 
         ts = int(time.time())
-        latency = math.ceil(self.bot.latency)
+        latency = math.floor(self.bot.latency*100)
 
         url = f"https://api.statuspage.io/v1/pages/{page_id}/metrics/{metric_id}/data.json"
         headers = {"Authorization": "OAuth " + api_key}
