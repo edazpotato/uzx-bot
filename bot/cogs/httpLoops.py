@@ -1,5 +1,6 @@
 from discord.ext import tasks, commands
 import time
+import math
 import aiohttp
 
 
@@ -8,7 +9,7 @@ class Loop(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        #self.looper.start()
+        self.looper.start()
         self.i = 0
 
     def cog_unload(self):
@@ -31,15 +32,14 @@ class Loop(commands.Cog):
         page_id = 'yly9drz8dt5f'
         metric_id = 'n7w2zgrp830t'
 
-        ts = print(int(time.time()))
-        latency = print(self.bot.latency)
+        ts = int(time.time())
+        latency = math.floor(self.bot.latency*100)
 
-        url = "https://api.statuspage.io/v1/pages/" + page_id + "/metrics/data"
+        url = f"https://api.statuspage.io/v1/pages/{page_id}/metrics/{metric_id}/data.json"
         headers = {"Authorization": "OAuth " + api_key}
-        payload = {"data": {metric_id: {"timestamp": ts, "value": latency}}}
+        payload = {"data": {"timestamp": ts, "value": latency}}
         session = aiohttp.ClientSession()
-        async with aiohttp.ClientSession() as session:
-            async with session.post(url, headers=headers, data=payload) as resp:
-                print(resp.status)
-                print(await resp.text())
-            session.close()
+        response = await session.post(url, headers=headers, data=payload)
+        print(response.status)
+        print(await response.text())
+        await session.close()
