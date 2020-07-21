@@ -9,7 +9,7 @@ class Loop(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.looper.start()
+        #self.looper.start()
         self.i = 0
 
     def cog_unload(self):
@@ -17,7 +17,7 @@ class Loop(commands.Cog):
 
     @tasks.loop(minutes=1)
     async def looper(self):
-        print("Looped: " + str(self.i));
+        print("Looped: " + str(self.i))
         self.i += 1
         await self.statuspage()
 
