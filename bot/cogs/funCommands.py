@@ -80,7 +80,7 @@ class Fun(commands.Cog):
         await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
 
     # jokes
-    @commands.command(name="joke", aliases=["jokes", "pun", "puns", "dadjoke", "dadjokes"])
+    #@commands.command(name="joke", aliases=["jokes", "pun", "puns", "dadjoke", "dadjokes"])
     async def joke_command(self, ctx):
         await ctx.message.add_reaction("<a:loading:732421120954990618>")
         p = Path(__file__).parents[1]
