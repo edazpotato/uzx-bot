@@ -56,7 +56,7 @@ class Fun(commands.Cog):
             "fields": [
                 {
                     "title": "ycnetaL ⏱",
-                    "content": "ms" + str(round(self.bot.latency, 3)*10000*-1)
+                    "content": "`ms" + str(round(self.bot.latency, 3)*10000*-1) + "`"
                 }
             ]
         }
