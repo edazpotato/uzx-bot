@@ -6,6 +6,8 @@ class CogLoader:
     def __init__(self, bot):
         self.bot = bot
         # Load cogs
+
+    def loadcogs(self):
         self.bot.add_cog(eventListeners.Events(self.bot))
         self.bot.add_cog(httpLoops.Loop(self.bot))
         # commands

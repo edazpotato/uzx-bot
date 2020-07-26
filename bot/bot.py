@@ -55,6 +55,7 @@ def run():
 
     # register cogs
     cogloader = cogs.CogLoader(client)
+    cogloader.loadcogs()
 
     client.run(os.getenv("DISCORD_TOKEN"))
 

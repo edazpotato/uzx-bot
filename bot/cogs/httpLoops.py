@@ -12,9 +12,6 @@ class Loop(commands.Cog):
         #self.looper.start()
         self.i = 0
 
-    def cog_unload(self):
-        self.looper.cancel()
-
     @tasks.loop(minutes=1)
     async def looper(self):
         print("Looped: " + str(self.i))

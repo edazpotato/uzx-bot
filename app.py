@@ -12,7 +12,6 @@ if not os.getenv("DISCORD_TOKEN"):
     from dotenv import load_dotenv
     load_dotenv()
 
-
 # setup Logging
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)

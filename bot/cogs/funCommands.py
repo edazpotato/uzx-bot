@@ -56,7 +56,7 @@ class Fun(commands.Cog):
             "fields": [
                 {
                     "title": "ycnetaL ⏱",
-                    "content": "`ms" + str(round(self.bot.latency, 3)*10000*-1) + "`"
+                    "content": "`ms" + str(round(self.bot.latency*10000*-1), 0) + "`"
                 }
             ]
         }
@@ -80,7 +80,7 @@ class Fun(commands.Cog):
         await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
 
     # jokes
-    #@commands.command(name="joke", aliases=["jokes", "pun", "puns", "dadjoke", "dadjokes"])
+    @commands.command(name="joke", aliases=["jokes", "pun", "puns", "dadjoke", "dadjokes"])
     async def joke_command(self, ctx):
         await ctx.message.add_reaction("<a:loading:732421120954990618>")
         p = Path(__file__).parents[1]
@@ -99,6 +99,7 @@ class Fun(commands.Cog):
         await embed.send(ctx)
         await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
 
+    # affermations
     @commands.command(name="affirmation", aliases=["affirm", "af"])
     async def affimation_command(self, ctx):
         await ctx.message.add_reaction("<a:loading:732421120954990618>")
@@ -110,5 +111,10 @@ class Fun(commands.Cog):
         embed = embeds.RichEmbed(self.bot, data)
         await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
         await embed.send(ctx)
+
+    # clap!
+    @commands.command(name="clap")
+    async def clap_command(self, ctx):
+        await ctx.message.delete()
 
 
