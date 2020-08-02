@@ -116,5 +116,8 @@ class Fun(commands.Cog):
     @commands.command(name="clap")
     async def clap_command(self, ctx):
         await ctx.message.delete()
+        "👋"
+    
+    
 
 
