@@ -31,7 +31,9 @@ def run():
             f"<@!{id}> ",
             f"<@!{id}>",
             f"<@{id}> ",
-            f"<@{id}>"
+            f"<@{id}>",
+            f"@{bot.user.name} ",
+            f"@{bot.user.name}"
         ]
 
         return prefixes
