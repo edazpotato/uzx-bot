@@ -21,18 +21,17 @@ def run():
     #        print(collection_name)
 
     def prefix(bot, message):
-        customprefix = "$"
+        guild = message.guild.id
+        id = bot.user.id
+        customprefix = "uzx"
+        
         prefixes = [
-            "{0} ".format(customprefix),
-            "{0}".format(customprefix),
-            "{0} ".format(bot.user.name),
-            "{0}".format(bot.user.name),
-            "<@!{0}> ".format(bot.user.id),
-            "<@!{0}>".format(bot.user.id),
-            "<@{0}> ".format(bot.user.id),
-            "<@{0}>".format(bot.user.id),
-            "{0} ".format(message.guild.me.nick),
-            "{0}".format(message.guild.me.nick)
+            f"{customprefix} ",
+            f"{customprefix}",
+            f"<@!{id}> ",
+            f"<@!{id}>",
+            f"<@{id}> ",
+            f"<@{id}>"
         ]
 
         return prefixes
