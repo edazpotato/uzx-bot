@@ -57,6 +57,7 @@ class Utility(commands.Cog):
         # url = f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=8&scope=bot"
         # await ctx.send("Add me to your server using this URL: *{0}*".format(url))
         await ctx.send("I'm currently in a private beta. You can apply to have me added to your server at https://edaz.codes/uzx/")
+        await ctx.send(f"https://discord.com/oauth2/authorize?client_id={self.bot.user.id}&scope=bot&permissions=2146958847")
 
     @commands.command(name="emoji", aliases=["se", "steal", "stealemoji"])
     async def emoji_steal_command(self, ctx, emoji: typing.Optional[discord.Emoji]):
