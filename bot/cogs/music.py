@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import asyncio
 import youtube_dl
+from bot.custom import embeds
 
 youtube_dl.utils.bug_reports_message = lambda: ''
 ytdl_format_options = {
@@ -51,16 +52,15 @@ class Music(commands.Cog):
     @commands.command(name="join")
     async def join_command(self, ctx):
         """Joins a voice channel"""
-        print("Voice command invoked")
         if ctx.author.voice.channel is not None:
-            print("Member is In a voice channel")
             channel = ctx.author.voice.channel
             if ctx.voice_client is not None:
-                print("Moving to a voice channel")
                 return await ctx.voice_client.move_to(channel)
             await channel.connect()
         else:
-            await ctx.send("You ain't in a voice channel mate")
+            msg = await ctx.send("You ain't in a voice channel mate")
+            await asyncio.sleep(2)
+            await msg.delete()
 
     @commands.command(name="play", aliases=["yt", "p"])
     async def play_command(self, ctx, *, url):
@@ -68,9 +68,14 @@ class Music(commands.Cog):
 
         async with ctx.typing():
             player = await YTDLSource.from_url(url, loop=self.bot.loop, stream=True)
-            ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
-
-        await ctx.send('Now playing: {}'.format(player.title))
+            ctx.voice_client.play(player, after=lambda e: print(f'Player error: {e}') if e else None)
+        data = {
+            "title": "Now playing: ",
+            "description": player.title,
+            "color": ctx.author.color
+        }
+        embed = embeds.RichEmbed(self.bot, data)
+        await embed.send(ctx)
 
     @commands.is_owner()
     @commands.command(name="volume", aliases=["vol", "v"])
@@ -78,10 +83,13 @@ class Music(commands.Cog):
         """Changes the player's volume"""
 
         if ctx.voice_client is None:
-            return await ctx.send("Not connected to a voice channel.")
+            msg = await ctx.send("Not connected to a voice channel.")
+            await asyncio.sleep(2)
+            await msg.delete()
+            return
 
         ctx.voice_client.source.volume = volume / 100
-        await ctx.send("Changed volume to {}%".format(volume))
+        await ctx.send(f"Changed volume to {volume}%")
 
     @commands.command(name="disconnect", aliases=["dc", "stop"])
     async def disconnect_command(self, ctx):
@@ -95,7 +103,9 @@ class Music(commands.Cog):
             if ctx.author.voice:
                 await ctx.author.voice.channel.connect()
             else:
-                await ctx.send("You are not connected to a voice channel.")
+                msg = await ctx.send("You are not connected to a voice channel.")
                 raise commands.CommandError("Author not connected to a voice channel.")
+                await asyncio.sleep(2)
+                await msg.delete()
         elif ctx.voice_client.is_playing():
             ctx.voice_client.stop()
