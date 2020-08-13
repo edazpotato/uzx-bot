@@ -51,7 +51,7 @@ def run():
     @client.event
     async def on_ready():
         print('We have logged in as {0.user}'.format(client))
-        activity = discord.Activity(type=discord.ActivityType.watching, name=" for @{0.user.name} help | Now with music - UZX PLAY <MSUIC> | edaz.codes/uzx".format(client))
+        activity = discord.Activity(type=discord.ActivityType.watching, name=f" for @{client.user.name} help | Now with music - @{client.user.name} PLAY <MSUIC> | edaz.codes/uzx")
         await client.change_presence(activity=activity)
 
     # register cogs
