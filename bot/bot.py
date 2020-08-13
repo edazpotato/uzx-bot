@@ -23,7 +23,7 @@ def run():
     def prefix(bot, message):
         guild = message.guild.id
         id = bot.user.id
-        customprefix = "uzx"
+        customprefix = bot.user.name
         
         prefixes = [
             f"{customprefix} ",
