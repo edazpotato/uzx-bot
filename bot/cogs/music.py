@@ -86,10 +86,9 @@ class Music(commands.Cog):
             msg = await ctx.send("Not connected to a voice channel.")
             await asyncio.sleep(2)
             await msg.delete()
-            return
-
-        ctx.voice_client.source.volume = volume / 100
-        await ctx.send(f"Changed volume to {volume}%")
+        else:
+            ctx.voice_client.source.volume = volume / 100
+            await ctx.send(f"Changed volume to {volume}%")
 
     @commands.command(name="disconnect", aliases=["dc", "stop"])
     async def disconnect_command(self, ctx):
@@ -104,7 +103,7 @@ class Music(commands.Cog):
                 await ctx.author.voice.channel.connect()
             else:
                 msg = await ctx.send("You are not connected to a voice channel.")
-                raise commands.CommandError("Author not connected to a voice channel.")
+                #raise commands.CommandError("Author not connected to a voice channel.")
                 await asyncio.sleep(2)
                 await msg.delete()
         elif ctx.voice_client.is_playing():
