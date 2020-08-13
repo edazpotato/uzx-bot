@@ -72,6 +72,7 @@ class Music(commands.Cog):
 
         await ctx.send('Now playing: {}'.format(player.title))
 
+    @commands.is_owner()
     @commands.command(name="volume", aliases=["vol", "v"])
     async def volume_command(self, ctx, volume: int):
         """Changes the player's volume"""
@@ -98,4 +99,3 @@ class Music(commands.Cog):
                 raise commands.CommandError("Author not connected to a voice channel.")
         elif ctx.voice_client.is_playing():
             ctx.voice_client.stop()
-

@@ -19,7 +19,7 @@ class Minecraft(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.color = 0x00AA00
-        self.hyApiKey = "65a65668-c404-45ba-bfb0-f05fd008929a"
+        self.hyApiKey = os.getenv("HYPIXEL_API_KEY")
 
     # general player data
     # TODO: add hypixel level
@@ -40,7 +40,7 @@ class Minecraft(commands.Cog):
         await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
 
     # player skin
-    @commands.command(name="skin", aliases=["s"])
+    @commands.command(name="skin")
     async def minecraft_skin_command(self, ctx, username: str):
         await ctx.message.add_reaction("<a:loading:732421120954990618>")
 

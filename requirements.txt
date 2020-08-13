@@ -2,3 +2,4 @@ discord.py[voice]
 sentry_sdk
 pymongo[tls]
 youtube_dl
+requests
