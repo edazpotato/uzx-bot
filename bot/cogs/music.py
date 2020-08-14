@@ -74,7 +74,7 @@ class Music(commands.Cog):
         data = {
             "title": "Now playing: ",
             "description": player.title,
-            "color": ctx.author.color
+            "color": ctx.guild.me.color
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
@@ -86,12 +86,16 @@ class Music(commands.Cog):
         """Changes the player's volume"""
 
         if ctx.voice_client is None:
+            await ctx.message.add_reaction("<:no:713222233627164673>")
             msg = await ctx.send("Not connected to a voice channel.")
             await asyncio.sleep(2)
             await msg.delete()
         else:
             ctx.voice_client.source.volume = volume / 100
-            await ctx.send(f"Changed volume to {volume}%")
+            await ctx.message.add_reaction("🔊")
+            msg = await ctx.send(f"Volume set to {volume}%")
+            await asyncio.sleep(2)
+            await msg.delete()
 
     @commands.command(name="disconnect", aliases=["dc", "stop"])
     async def disconnect_command(self, ctx):
@@ -99,6 +103,9 @@ class Music(commands.Cog):
 
         await ctx.voice_client.disconnect()
         await ctx.message.add_reaction("👋")
+        msg = await ctx.send("Thanks for listening!")
+        await asyncio.sleep(2)
+        await msg.delete()
 
     @play_command.before_invoke
     async def ensure_voice(self, ctx):
