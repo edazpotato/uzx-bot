@@ -14,6 +14,7 @@ class Fun(commands.Cog):
         self.bot = bot
         self.color = 0xFF69B4
         self.waiter = slow.Waiter()
+        self.ksfot_token = os.getenv("KSOFT_SI_TOKEN")
 
     async def fetch(self, url, message, headers: typing.Optional[dict] = {}):
         await self.waiter.start(message)
@@ -57,7 +58,7 @@ class Fun(commands.Cog):
     # memes
     @commands.command(name="meme", aliases=["memes"])
     async def meme_command(self, ctx):
-        res = await self.fetch("https://api.ksoft.si/images/random-meme", ctx.message, {"Authorization": "Bearer " + os.getenv("KSOFT_SI_TOKEN")})
+        res = await self.fetch("https://api.ksoft.si/images/random-meme", ctx.message, {"Authorization": f"Bearer {self.KSOFT_TOKEN}"})
         data = {
             "title": res["title"],
             "color": self.color,
@@ -110,6 +111,22 @@ class Fun(commands.Cog):
     # urban disctionary command
     @commands.command(name="urban", aliases=["ub", "def", "define", "urbandict"])
     async def urban_command(self, ctx, phrase: str):
+        res = await self.fetch(f"http://api.urbandictionary.com/v0/define?term={phrase}", ctx.message)
+        list = res["list"]
+        if list[0]:
+            definition = list[0]
+            data = {
+                "title": definition["word"],
+                "url": definition["permalink"],
+                "color": ctx.guild.me.color,
+                "description": definition["definition"],
+                "fields": [
+                    {"title": "Example", "content": definition["example"]}
+                ]
+            }
+            embed = embeds.RichEmbed(self.bot, data)
+            await embed.send(ctx)
+
 
     
     
