@@ -9,42 +9,33 @@ from discord.ext import commands
 from bot.custom import embeds
 
 
-async def fetch(url, headers: typing.Optional[dict] = {}):
-    session = aiohttp.ClientSession()
-    response = await session.get(url, headers=headers)
-    res = await response.json()
-    await session.close()
-    return res
-
-
 class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.color = 0xFF69B4
+        self.waiter = slow.Waiter
+
+    async def fetch(self, url, message, headers: typing.Optional[dict] = {}):
+        await self.waiter.start(message)
+        session = aiohttp.ClientSession()
+        response = await session.get(url, headers=headers)
+        res = await response.json()
+        await session.close()
+        await self.waiter.stop(message)
+        return res
 
     # hello command
     @commands.command(name="hello", aliases=["hi"], hidden=True)
     async def hello_command(self, ctx):
         await ctx.message.add_reaction("👋")
-
-        data = {
-            "title": "Helloo!",
-            "color": self.color
-        }
-        embed = embeds.RichEmbed(self.bot, data)
-        await embed.send(ctx)
+        await ctx.send("Hi.")
 
     # is the earth flat?
     @commands.command(name="is", hidden=True)
     async def is_the_earth_flat_command(self, ctx, *, the_earth_flat: str):
         if the_earth_flat == "the earth flat?" or "the earth flat":
             await ctx.message.add_reaction(self.bot.get_emoji(713222235246035024))
-            data = {
-                "title": "<a:ano:713222235246035024> NO",
-                "color": 0xFF0000
-            }
-            embed = embeds.RichEmbed(self.bot, data)
-            await embed.send(ctx)
+            await ctx.send("NO")
 
     # pong command
     @commands.command(name="pong", hidden=True)
@@ -66,8 +57,7 @@ class Fun(commands.Cog):
     # memes
     @commands.command(name="meme", aliases=["memes"])
     async def meme_command(self, ctx):
-        await ctx.message.add_reaction("<a:loading:732421120954990618>")
-        res = await fetch("https://api.ksoft.si/images/random-meme", {"Authorization": "Bearer " + os.getenv("KSOFT_SI_TOKEN")})
+        res = await fetch("https://api.ksoft.si/images/random-meme", ctx.message, {"Authorization": "Bearer " + os.getenv("KSOFT_SI_TOKEN")})
         data = {
             "title": res["title"],
             "color": self.color,
@@ -77,17 +67,17 @@ class Fun(commands.Cog):
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
-        await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
 
     # jokes
     @commands.command(name="joke", aliases=["jokes", "pun", "puns", "dadjoke", "dadjokes"])
     async def joke_command(self, ctx):
-        await ctx.message.add_reaction("<a:loading:732421120954990618>")
+        await self.waiter.start(message)
         p = Path(__file__).parents[1]
         p = Path(str(p) + "\\data\\command_data\\jokes.json")
         f = open(file=p, mode="r")
         jsonData = json.load(f)
         f.close()
+        await self.waiter.stop(message)
         jokes = jsonData["jokes"]
         jokeId = random.randint(0, len(jokes))
         joke = jokes[jokeId]
@@ -97,19 +87,18 @@ class Fun(commands.Cog):
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
-        await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
 
     # affermations
     @commands.command(name="affirmation", aliases=["affirm", "af"])
     async def affimation_command(self, ctx):
-        await ctx.message.add_reaction("<a:loading:732421120954990618>")
+        await self.waiter.start(message)
         affirmation = await fetch("https://www.affirmations.dev/")
+        await self.waiter.stop(message)
         data = {
             "color": self.color,
             "title": affirmation["affirmation"]
         }
         embed = embeds.RichEmbed(self.bot, data)
-        await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
         await embed.send(ctx)
 
     # clap!

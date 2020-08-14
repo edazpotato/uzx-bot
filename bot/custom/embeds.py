@@ -13,6 +13,8 @@ class RichEmbed:
         embed = discord.Embed(title=data["title"], description=data["description"], color=data["color"], timestamp=datetime.datetime.utcnow())
         if "thumbnail_url" in data:
             embed.set_thumbnail(url=data["thumbnail_url"])
+        if "url" in data:
+            embed.url = data["url"]
         if "image_url" in data:
             embed.set_image(url=data["image_url"])
         if "author" in data:

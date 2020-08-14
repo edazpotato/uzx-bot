@@ -3,16 +3,7 @@ import aiohttp
 import os
 import discord
 from discord.ext import commands
-from bot.custom import embeds
-
-
-async def fetch(url):
-    session = aiohttp.ClientSession()
-    response = await session.get(url)
-    res = await response.json()
-    await session.close()
-    return res
-
+from bot.custom import embeds, slow
 
 
 class Minecraft(commands.Cog):
@@ -20,13 +11,22 @@ class Minecraft(commands.Cog):
         self.bot = bot
         self.color = 0x00AA00
         self.hyApiKey = os.getenv("HYPIXEL_API_KEY")
+        self.waiter = slow.Waiter()
+
+    async def fetch(self, url, message):
+        await self.waiter.start(message)
+        session = aiohttp.ClientSession()
+        response = await session.get(url)
+        res = await response.json()
+        await session.close()
+        await self.waiter.stop(message)
+        return res
 
     # general player data
     # TODO: add hypixel level
     @commands.command(name="player", aliases=["minecraft", "mc"])
     async def minecraft_player_command(self, ctx, username: str):
-        await ctx.message.add_reaction("<a:loading:732421120954990618>")
-        uuidres = await fetch("https://api.mojang.com/users/profiles/minecraft/{0}".format(username))
+        uuidres = await self.fetch("https://api.mojang.com/users/profiles/minecraft/{0}".format(username), ctx.message)
         uuid = uuidres["id"]
         playername = uuidres["name"]
         data = {
@@ -37,14 +37,11 @@ class Minecraft(commands.Cog):
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
-        await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
 
     # player skin
     @commands.command(name="skin")
     async def minecraft_skin_command(self, ctx, username: str):
-        await ctx.message.add_reaction("<a:loading:732421120954990618>")
-
-        uuidres = await fetch("https://api.mojang.com/users/profiles/minecraft/{0}".format(username))
+        uuidres = await self.fetch(f"https://api.mojang.com/users/profiles/minecraft/{username}", ctx.message)
         uuid = uuidres["id"]
         playername = uuidres["name"]
         data = {
@@ -54,7 +51,6 @@ class Minecraft(commands.Cog):
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
-        await ctx.message.remove_reaction("<a:loading:732421120954990618>", ctx.me)
 
 
 

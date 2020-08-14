@@ -16,7 +16,7 @@ class Moderation(commands.Cog):
     @commands.bot_has_permissions(manage_messages=True)
     async def purge_messages_command(self, ctx, amount: typing.Optional[int] = 1):
         await ctx.channel.purge(limit=amount+1)
-        msg = await ctx.send("Cleared {0} messages".format(amount))
+        msg = await ctx.send(f"Cleared {amount} messages")
         await asyncio.sleep(1)
         await msg.delete()
 
@@ -75,9 +75,9 @@ class Moderation(commands.Cog):
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
 
-    @commands.check_any(commands.is_owner(), commands.has_permissions(kick_members=True))
+    @commands.check_any(commands.is_owner(), commands.has_permissions(manage_server=True))
     @commands.command(name="leave", aliases=["goaway"])
     async def leave_command(self, ctx):
         await ctx.message.add_reaction("👋")
         await ctx.send("'igt, ima head out ")
-        #   await ctx.guild.leave()
+        await ctx.guild.leave()

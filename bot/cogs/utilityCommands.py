@@ -11,6 +11,7 @@ class Utility(commands.Cog):
         self.bot = bot
         self.color = 0xFF4500
 
+
     # ping command
     @commands.command(name="ping")
     async def ping_command(self, ctx):
@@ -54,10 +55,8 @@ class Utility(commands.Cog):
 
     @commands.command(name="invite", aliases=["inv", "add"])
     async def invite_bot_command(self, ctx):
-        # url = f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=8&scope=bot"
-        # await ctx.send("Add me to your server using this URL: *{0}*".format(url))
-        await ctx.send("I'm currently in a private beta. You can apply to have me added to your server at https://edaz.codes/uzx/")
-        await ctx.send(f"https://discord.com/oauth2/authorize?client_id={self.bot.user.id}&scope=bot&permissions=2146958847")
+        #await ctx.send("I'm currently in a private beta. You can apply to have me added to your server at https://edaz.codes/uzx/")
+        await ctx.send(f"<https://discord.com/oauth2/authorize?client_id={self.bot.user.id}&scope=bot&permissions=2146958847>")
 
     @commands.command(name="emoji", aliases=["se", "steal", "stealemoji"])
     async def emoji_steal_command(self, ctx, emoji: typing.Optional[discord.Emoji]):
@@ -71,7 +70,8 @@ class Utility(commands.Cog):
             data = {
                 "color": self.color,
                 "title": f":{emoji.name}:",
-                "description": "Click to the image, click *open original*  to open it in your browser, then right click and choose *save image as*",
+                "url": emoji.url,
+                "description": "Click the link above to open the emoji in your browser, then right click and choose *save image as*",
                 "image_url": emoji.url
             }
         embed = embeds.RichEmbed(self.bot, data)

@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import asyncio
 import youtube_dl
-from bot.custom import embeds
+from bot.custom import embeds, slow
 
 youtube_dl.utils.bug_reports_message = lambda: ''
 ytdl_format_options = {
@@ -48,6 +48,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
 class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.waiter = slow.Waiter
 
     @commands.command(name="join")
     async def join_command(self, ctx):
@@ -66,9 +67,10 @@ class Music(commands.Cog):
     async def play_command(self, ctx, *, url):
         """Streams from a url (doesn't predownload)"""
 
-        async with ctx.typing():
-            player = await YTDLSource.from_url(url, loop=self.bot.loop, stream=True)
-            ctx.voice_client.play(player, after=lambda e: print(f'Player error: {e}') if e else None)
+        await self.waiter.start(ctx.message)
+        player = await YTDLSource.from_url(url, loop=self.bot.loop, stream=True)
+        ctx.voice_client.play(player, after=lambda e: print(f"Player error: {e}") if e else None)
+        await self.waiter.stop(ctx.message)
         data = {
             "title": "Now playing: ",
             "description": player.title,
@@ -103,7 +105,6 @@ class Music(commands.Cog):
                 await ctx.author.voice.channel.connect()
             else:
                 msg = await ctx.send("You are not connected to a voice channel.")
-                #raise commands.CommandError("Author not connected to a voice channel.")
                 await asyncio.sleep(2)
                 await msg.delete()
         elif ctx.voice_client.is_playing():
