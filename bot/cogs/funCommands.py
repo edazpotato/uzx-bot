@@ -57,7 +57,7 @@ class Fun(commands.Cog):
     # memes
     @commands.command(name="meme", aliases=["memes"])
     async def meme_command(self, ctx):
-        res = await fetch("https://api.ksoft.si/images/random-meme", ctx.message, {"Authorization": "Bearer " + os.getenv("KSOFT_SI_TOKEN")})
+        res = await self.fetch("https://api.ksoft.si/images/random-meme", ctx.message, {"Authorization": "Bearer " + os.getenv("KSOFT_SI_TOKEN")})
         data = {
             "title": res["title"],
             "color": self.color,
@@ -92,7 +92,7 @@ class Fun(commands.Cog):
     @commands.command(name="affirmation", aliases=["affirm", "af"])
     async def affimation_command(self, ctx):
         await self.waiter.start(message)
-        affirmation = await fetch("https://www.affirmations.dev/")
+        affirmation = await self.fetch("https://www.affirmations.dev/", ctx.message)
         await self.waiter.stop(message)
         data = {
             "color": self.color,
@@ -102,10 +102,15 @@ class Fun(commands.Cog):
         await embed.send(ctx)
 
     # clap!
-    @commands.command(name="clap")
+    #@commands.command(name="clap")
     async def clap_command(self, ctx):
         await ctx.message.delete()
         "👋"
+
+    # urban disctionary command
+    @commands.command(name="urban", aliases=["ub", "def", "define", "urbandict"])
+    async def urban_command(self, ctx, phrase: str):
+
     
     
 
