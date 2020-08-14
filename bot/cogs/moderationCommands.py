@@ -75,7 +75,7 @@ class Moderation(commands.Cog):
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
 
-    @commands.check_any(commands.is_owner(), commands.has_permissions(manage_server=True))
+    @commands.check_any(commands.is_owner(), commands.has_permissions(manage_guild=True))
     @commands.command(name="leave", aliases=["goaway"])
     async def leave_command(self, ctx):
         await ctx.message.add_reaction("👋")

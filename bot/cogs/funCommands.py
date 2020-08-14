@@ -6,7 +6,7 @@ import typing
 import random
 import discord
 from discord.ext import commands
-from bot.custom import embeds
+from bot.custom import embeds, slow
 
 
 class Fun(commands.Cog):
