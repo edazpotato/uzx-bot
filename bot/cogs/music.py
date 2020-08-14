@@ -78,6 +78,7 @@ class Music(commands.Cog):
         }
         embed = embeds.RichEmbed(self.bot, data)
         await embed.send(ctx)
+        await ctx.message.add_reaction("🎵")
 
     @commands.is_owner()
     @commands.command(name="volume", aliases=["vol", "v"])
@@ -97,6 +98,7 @@ class Music(commands.Cog):
         """Stops and disconnects the bot from voice"""
 
         await ctx.voice_client.disconnect()
+        await ctx.message.add_reaction("👋")
 
     @play_command.before_invoke
     async def ensure_voice(self, ctx):
