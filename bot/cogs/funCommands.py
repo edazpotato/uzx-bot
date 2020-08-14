@@ -13,7 +13,7 @@ class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.color = 0xFF69B4
-        self.waiter = slow.Waiter
+        self.waiter = slow.Waiter()
 
     async def fetch(self, url, message, headers: typing.Optional[dict] = {}):
         await self.waiter.start(message)

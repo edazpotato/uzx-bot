@@ -48,7 +48,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
 class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.waiter = slow.Waiter
+        self.waiter = slow.Waiter()
 
     @commands.command(name="join")
     async def join_command(self, ctx):
