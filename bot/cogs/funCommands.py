@@ -115,11 +115,13 @@ class Fun(commands.Cog):
         list = res["list"]
         if list[0]:
             definition = list[0]
+            description = definition["definition"].replace("[", "")
+            description = description.replace("]", "")
             data = {
                 "title": definition["word"],
                 "url": definition["permalink"],
                 "color": ctx.guild.me.color,
-                "description": definition["definition"],
+                "description": description,
                 "fields": [
                     {"title": "Example", "content": definition["example"]}
                 ]
