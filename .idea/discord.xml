@@ -2,6 +2,9 @@
 <project version="4">
   <component name="DiscordProjectSettings">
     <option name="show" value="true" />
+    <option name="nameOverrideEnabled" value="true" />
+    <option name="nameOverrideText" value="UZX discord bot" />
+    <option name="description" value="A multipurpose discord bot made so that I have a bot that does what I want" />
   </component>
   <component name="ProjectNotificationSettings">
     <option name="askShowProject" value="false" />

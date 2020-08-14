@@ -3,6 +3,7 @@ from discord.ext import commands
 import asyncio
 import youtube_dl
 from bot.custom import embeds, slow
+import typing
 
 youtube_dl.utils.bug_reports_message = lambda: ''
 ytdl_format_options = {
@@ -82,20 +83,27 @@ class Music(commands.Cog):
 
     @commands.is_owner()
     @commands.command(name="volume", aliases=["vol", "v"])
-    async def volume_command(self, ctx, volume: int):
+    async def volume_command(self, ctx, volume: typing.Optional[int]):
         """Changes the player's volume"""
-
         if ctx.voice_client is None:
             await ctx.message.add_reaction("<:no:713222233627164673>")
             msg = await ctx.send("Not connected to a voice channel.")
             await asyncio.sleep(2)
             await msg.delete()
         else:
-            ctx.voice_client.source.volume = volume / 100
-            await ctx.message.add_reaction("🔊")
-            msg = await ctx.send(f"Volume set to {volume}%")
-            await asyncio.sleep(2)
-            await msg.delete()
+            if volume:
+                ctx.voice_client.source.volume = volume / 100
+                await ctx.message.add_reaction("🔊")
+                msg = await ctx.send(f"Volume set to {volume}%")
+                await asyncio.sleep(2)
+                await msg.delete()
+            else:
+                if ctx.voice_client.source.volume:
+                    vol = ctx.voice_client.source.volume * 100
+                    await ctx.message.add_reaction("🔉")
+                    await ctx.send(f"Current volume: {vol}%")
+                else:
+                    await ctx.send("I'm not playing music rn")
 
     @commands.command(name="disconnect", aliases=["dc", "stop"])
     async def disconnect_command(self, ctx):
