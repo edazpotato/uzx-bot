@@ -10,6 +10,7 @@ import youtube_dl
 from discord.ext import commands
 from pathlib import Path
 from bot.custom import embeds, slow
+import typing
 
 # make youtube_dl shut up
 youtube_dl.utils.bug_reports_message = lambda: ''
@@ -154,10 +155,10 @@ class Song(dict):
             self['requested_by'] = str(author.name)
             self['requested_by_id'] = author.id
 
-# 20 minutes, in seconds
-DURATION_CEILING = 20 * 60
+# 60 minutes, in seconds
+DURATION_CEILING = 60 * 60
 
-DURATION_CEILING_STRING = '20mins'
+DURATION_CEILING_STRING = "an hour (this is so that our servers don't die)"
 
 SONGS_PER_PAGE = 10
 
@@ -190,13 +191,12 @@ class Music(commands.Cog):
         try:
             channel = ctx.message.author.voice.channel
         except:
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send("You're not connected to a voice channel.", delete_after=4)
+            await ctx.send("You're not connected to a voice channel.", delete_after=5)
             return
 
         if voice is not None and not self.client_in_same_channel(ctx.message.author, ctx.guild):
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send("You're not in my voice channel.", delete_after=4)
+            
+            await ctx.send("You're not in my voice channel.", delete_after=5)
             return
 
         if not url.startswith('https://'):
@@ -230,11 +230,11 @@ class Music(commands.Cog):
             queue.clear()
             self.voice_clients[ctx.guild] = None
             await ctx.message.add_reaction("👋")
-            await ctx.send("Thanks for listening!", delete_after=4)
+            await ctx.send("Thanks for listening!", delete_after=5)
             await voice.disconnect()
         else:
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send("You're not in a voice channel with me.", delete_after=4)
+            
+            await ctx.send("You're not in a voice channel with me.", delete_after=5)
 
     @commands.command()
     async def skip(self, ctx: commands.Context):
@@ -244,18 +244,18 @@ class Music(commands.Cog):
         queue = self.music_queues.get(ctx.guild)
 
         if not self.client_in_same_channel(ctx.message.author, ctx.guild):
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send("You're not in a voice channel with me.", delete_after=4)
+            
+            await ctx.send("You're not in a voice channel with me.", delete_after=5)
             return
 
         if voice is None or not voice.is_playing():
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send("I'm not playing a song right now.", delete_after=4)
+            
+            await ctx.send("I'm not playing a song right now.", delete_after=5)
             return
 
         if ctx.author in queue.skip_voters:
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send("You've already voted to skip this song.", delete_after=4)
+            
+            await ctx.send("You've already voted to skip this song.", delete_after=5)
             return
 
         channel = ctx.message.author.voice.channel
@@ -264,11 +264,11 @@ class Music(commands.Cog):
         queue.add_skip_vote(ctx.author)
 
         if len(queue.skip_voters) >= required_votes:
-            await ctx.send("Skipping song after successful vote.", delete_after=4)
+            await ctx.send("Skipping song after successful vote.", delete_after=5)
             voice.stop()
         else:
             await ctx.message.add_reaction("🗳️")
-            await ctx.send(f"You voted to skip this song. {required_votes - len(queue.skip_voters)} more votes are required.", delete_after=4)
+            await ctx.send(f"You voted to skip this song. {required_votes - len(queue.skip_voters)} more votes are required.", delete_after=5)
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
@@ -278,7 +278,7 @@ class Music(commands.Cog):
         voice = self.voice_clients.get(ctx.guild)
 
         if not self.client_in_same_channel(ctx.message.author, ctx.guild):
-            await ctx.send("You're not in a voice channel with me.", delete_after=4)
+            await ctx.send("You're not in a voice channel with me.", delete_after=5)
         elif voice is None or not voice.is_playing():
             await ctx.send("I'm not playing a song right now.")
         else:
@@ -291,8 +291,8 @@ class Music(commands.Cog):
         queue = self.music_queues.get(ctx.guild)
 
         if song_index not in range(len(queue) + 1):
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send("A song does not exist at that index in the queue.", delete_after=4)
+            
+            await ctx.send("A song does not exist at that index in the queue.", delete_after=5)
             return
 
         embed = queue.get_embed(song_index)
@@ -303,8 +303,8 @@ class Music(commands.Cog):
         '''Removes the last song you requested from the queue, or a specific song if queue position specified.'''
 
         if not self.client_in_same_channel(ctx.message.author, ctx.guild):
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send("You're not in a voice channel with me.", delete_after=4)
+            
+            await ctx.send("You're not in a voice channel with me.", delete_after=5)
             return
 
         if song_id is None:
@@ -313,7 +313,7 @@ class Music(commands.Cog):
             for index, song in reversed(list(enumerate(queue))):
                 if ctx.author.id == song.requested_by_id:
                     queue.pop(index)
-                    await ctx.send(f'Song "{song.title}" removed from queue.', delete_after=4)
+                    await ctx.send(f'Song "{song.title}" removed from queue.', delete_after=5)
                     return
         else:
             queue = self.music_queues.get(ctx.guild)
@@ -321,16 +321,16 @@ class Music(commands.Cog):
             try:
                 song = queue[song_id - 1]
             except IndexError:
-                await ctx.message.add_reaction("<:no:713222233627164673>")
-                await ctx.send('An invalid index was provided.', delete_after=4)
+                
+                await ctx.send('An invalid index was provided.', delete_after=5)
                 return
 
             if ctx.author.id == song.requested_by_id:
                 queue.pop(song_id - 1)
-                await ctx.send(f'Song {song.title} removed from queue.', delete_after=4)
+                await ctx.send(f'Song {song.title} removed from queue.', delete_after=5)
             else:
-                await ctx.message.add_reaction("<:no:713222233627164673>")
-                await ctx.send('You cannot remove a song requested by someone else.', delete_after=4)
+                
+                await ctx.send('You cannot remove a song requested by someone else.', delete_after=5)
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
@@ -340,20 +340,20 @@ class Music(commands.Cog):
         queue = self.music_queues.get(ctx.guild)
 
         if not self.client_in_same_channel(ctx.message.author, ctx.guild):
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send("You're not in a voice channel with me.", delete_after=4)
+            
+            await ctx.send("You're not in a voice channel with me.", delete_after=5)
             return
 
         if song_id is None or 0:
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send("You need to specify a song by it's queue index.", delete_after=4)
+            
+            await ctx.send("You need to specify a song by it's queue index.", delete_after=5)
             return
 
         try:
             song = queue[song_id - 1]
         except IndexError:
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send('A song does not exist at this queue index.', delete_after=4)
+            
+            await ctx.send('A song does not exist at this queue index.', delete_after=5)
             return
 
         queue.pop(song_id - 1)
@@ -367,18 +367,18 @@ class Music(commands.Cog):
         queue = self.music_queues.get(ctx.guild)
 
         if not self.client_in_same_channel(ctx.message.author, ctx.guild):
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send("You're not in a voice channel with me.", delete_after=4)
+            
+            await ctx.send("You're not in a voice channel with me.", delete_after=5)
             return
 
         if not len(queue):
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send("I don't have anything in my queue right now.", delete_after=4)
+            
+            await ctx.send("I don't have anything in my queue right now.", delete_after=5)
             return
 
         if len(queue) < SONGS_PER_PAGE * (page - 1):
-            await ctx.message.add_reaction("<:no:713222233627164673>")
-            await ctx.send("I don't have that many pages in my queue.", delete_after=4)
+            
+            await ctx.send("I don't have that many pages in my queue.", delete_after=5)
             return
 
         to_send = f'```\n    {set_str_len("Song", 66)}{set_str_len("Uploader", 36)}Requested By\n'
@@ -390,6 +390,30 @@ class Music(commands.Cog):
             to_send += f'{set_str_len(f"{pos + 1})", 4)}{title}|{uploader}|{requested_by}\n'
 
         await ctx.send(to_send + '```')
+
+    @commands.is_owner()
+    @commands.command(name="volume", aliases=["vol", "v"])
+    async def volume_command(self, ctx, volume: typing.Optional[int]):
+        """Changes the player's volume"""
+        if ctx.voice_client is None:
+
+            msg = await ctx.send("Not connected to a voice channel.")
+            await ctx.send("You're not in a voice channel with me.", delete_after=5)
+            await asyncio.sleep(2)
+            await msg.delete()
+        else:
+            if volume:
+                ctx.voice_client.source.volume = volume / 100
+                await ctx.message.add_reaction("🔊")
+                await ctx.send(f"Volume set to {volume}%", delete_after=5)
+            else:
+                if ctx.voice_client.source.volume:
+                    vol = ctx.voice_client.source.volume * 100
+                    await ctx.message.add_reaction("🔉")
+                    await ctx.send(f"Current volume: {vol}%")
+                else:
+                    await ctx.send("I'm not playing music rn")
+
 
     async def play_all_songs(self, guild: discord.Guild):
         queue = self.music_queues.get(guild)
