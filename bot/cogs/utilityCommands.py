@@ -22,7 +22,7 @@ class Utility(commands.Cog):
             "fields": [
                 {
                     "title": "⏱ Latency",
-                    "content": "`" + str(round(self.bot.latency*10000), 0) + "ms`"
+                    "content": "`" + str(round(self.bot.latency*10000, 0)) + "ms`"
                 }
             ]
         }
