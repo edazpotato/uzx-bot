@@ -110,20 +110,20 @@ class Fun(commands.Cog):
 
     # urban disctionary command
     @commands.command(name="urban", aliases=["ub", "def", "define", "urbandict"])
-    async def urban_command(self, ctx, phrase: str):
+    async def urban_command(self, ctx, *, phrase: str):
         res = await self.fetch(f"http://api.urbandictionary.com/v0/define?term={phrase}", ctx.message)
         list = res["list"]
         if list[0]:
             definition = list[0]
-            description = definition["definition"].replace("[", "")
-            description = description.replace("]", "")
+            description = definition["definition"].replace("[", "").replace("]", "")
+            example = definition["example"].replace("[", "").replace("]", "")
             data = {
                 "title": definition["word"],
                 "url": definition["permalink"],
                 "color": ctx.guild.me.color,
                 "description": description,
                 "fields": [
-                    {"title": "Example", "content": definition["example"]}
+                    {"title": "Example", "content": example}
                 ]
             }
             embed = embeds.RichEmbed(self.bot, data)
