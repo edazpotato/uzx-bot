@@ -156,7 +156,7 @@ class Song(dict):
             self['requested_by_id'] = author.id
 
 # 60 minutes, in seconds
-DURATION_CEILING = 60 * 60
+DURATION_CEILING = 61 * 60
 
 DURATION_CEILING_STRING = "an hour (this is so that our servers don't die)"
 
@@ -502,9 +502,9 @@ class Music(commands.Cog):
             return False, 'Invalid URL provided or no video found.'
 
         if song.get('is_live', True):
-            return False, 'Invalid video - either live stream or unsupported website.'
+            return False, "Thats an Invalid video - it's either a live stream or from an unsupported website."
 
         if song.duration_raw > DURATION_CEILING:
-            return False, f'Video is too long. Keep it under {DURATION_CEILING_STRING}.'
+            return False, f'That video is too long. Please keep it under {DURATION_CEILING_STRING}.'
 
         return True, None
