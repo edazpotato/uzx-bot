@@ -1,0 +1,11 @@
+{
+    "favorites.resources": [
+        "bot",
+        "framework",
+        ".eslintrc.js",
+        ".gitignore",
+        "package.json",
+        "tsconfig.json"
+    ],
+    "favorites.sortOrder": "DESC"
+}

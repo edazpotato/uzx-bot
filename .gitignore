@@ -1,0 +1,9 @@
+node_modules/
+*/dist/
+*.db
+*.sqlite
+*.env
+.env
+pnpm-lock.yaml
+package-lock.json
+yarn.lock

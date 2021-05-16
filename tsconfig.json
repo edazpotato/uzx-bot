@@ -1,0 +1,26 @@
+{
+	"compileOnSave": true,
+	"compilerOptions": {
+		"noImplicitAny": false,
+		"noImplicitThis": false,
+		"strictNullChecks": false,
+
+		"sourceMap": true,
+		"allowJs": true,
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+
+		"baseUrl": ".",
+		"paths": {
+			"@framework": ["framework/src"],
+			"@framework/*": ["framework/src/*"]
+		},
+		"outDir": "dist",
+
+		"target": "ES5"
+	},
+
+	"include": ["bot/src/**/*", "framework/src/**/*"],
+	"exclude": ["node_modules", "dist/**/*"]
+}

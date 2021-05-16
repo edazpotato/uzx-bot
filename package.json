@@ -1,0 +1,42 @@
+{
+	"name": "uzx-bot",
+	"version": "4.0.0",
+	"description": "Version four of UZX bot, using discord's slash commands and a custom framework",
+	"main": "bot/dist/index.js",
+	"scripts": {
+		"build": "tsc",
+		"build-w": "tsc --watch",
+		"lint": "eslint \"bot/src/**\" \"framework/src/**\"",
+		"start": "node dist/bot/src/index.js",
+		"start-b": "tsc&&node dist/bot/src/index.js"
+	},
+	"_moduleAliases": {
+		"@root": ".",
+		"@framework": "dist/framework/src"
+	},
+	"keywords": [
+		"discord",
+		"bot"
+	],
+	"author": "Edazpotato",
+	"license": "UNLICENSED",
+	"dependencies": {
+		"@aero/centra": "^1.0.6",
+		"@types/ws": "^7.4.4",
+		"dotenv": "^9.0.2",
+		"module-alias": "^2.2.2",
+		"ws": "^7.4.5"
+	},
+	"devDependencies": {
+		"@types/node": "^15.0.2",
+		"@typescript-eslint/eslint-plugin": "^4.23.0",
+		"@typescript-eslint/parser": "^4.23.0",
+		"eslint": "^7.26.0",
+		"eslint-config-prettier": "^8.3.0",
+		"typescript": "^4.2.4"
+	},
+	"optionalDependencies": {
+		"bufferutil": "^4.0.3",
+		"utf-8-validate": "^5.0.5"
+	}
+}
